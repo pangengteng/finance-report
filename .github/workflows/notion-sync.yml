@@ -1,19 +1,25 @@
-name: Sync to Notion
+name: Sync Markdown to Notion
+
 on:
   push:
-    branches: [main]
+    branches:
+      - main
     paths:
-      - '**'
-  workflow_dispatch:
+      - '**/*.md'
 
 jobs:
   sync:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4.2.2
-      - name: Sync Markdown in Github to Notion
-        uses: Fencer-Security/nogisync@v1.3.3
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
         with:
-          notion_api_key: ${{ secrets.NOTION_API_KEY }}
-          notion_parent_page_id: ${{ secrets.NOTION_PARENT_PAGE_ID }}
-          docs_path: '.'
+          node-version: 20
+
+      - run: |
+          npx @vrerv/md-to-notion \
+            -t "${{ secrets.NOTION_API_KEY }}" \
+            -p "${{ secrets.NOTION_PARENT_PAGE_ID }}" \
+            .
