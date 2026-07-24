@@ -23,4 +23,5 @@ jobs:
           npx @vrerv/md-to-notion \
             -t "${{ secrets.NOTION_API_KEY }}" \
             -p "${{ secrets.NOTION_PARENT_PAGE_ID }}" \
+            -d \
             .
